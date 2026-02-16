@@ -294,7 +294,7 @@
       this.needsMapReset = false;
 
       this.player = {
-        x: 14, y: 23,
+        x: 14.5, y: 23.5,
         dir: DIR.LEFT,
         nextDir: DIR.LEFT,
         speed: GAME.PLAYER_SPEED,
@@ -318,7 +318,7 @@
       this.state = 'ready';
       this.stateTimer = 0;
 
-      this.player.x = 14; this.player.y = 23;
+      this.player.x = 14.5; this.player.y = 23.5;
       this.player.dir = DIR.LEFT;
       this.player.nextDir = DIR.LEFT;
 
@@ -383,7 +383,7 @@
           } else {
             this.state = 'ready';
             this.stateTimer = 0;
-            this.player.x = 14; this.player.y = 23;
+            this.player.x = 14.5; this.player.y = 23.5;
             this.player.dir = DIR.LEFT;
             this.player.nextDir = DIR.LEFT;
             const starts = [
@@ -692,7 +692,13 @@
 
     const app = new GameApp(canvas, hud);
     app.start();
-    window.addEventListener('click', () => window.focus());
+
+    // Ensure keyboard works even if the page didn't grab focus yet.
+    try { canvas.focus(); } catch {}
+    window.addEventListener('click', () => {
+      try { canvas.focus(); } catch {}
+      window.focus();
+    });
   }
 
   if (document.readyState === 'loading') {
