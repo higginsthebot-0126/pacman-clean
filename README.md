@@ -17,6 +17,9 @@ npm start
 
 Then open the printed URL.
 
+## Why you might have seen a black screen before
+Some browsers restrict **ES module imports over `file://`**. This repo ships a single-file `game.js` build so it runs reliably even when opened directly.
+
 ## Controls
 
 - Move: **Arrow keys** or **WASD**
