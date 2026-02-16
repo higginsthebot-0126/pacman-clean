@@ -118,6 +118,7 @@
       this.pausePressed = false;
       this.restartPressed = false;
 
+      // keyboard
       window.addEventListener('keydown', (e) => {
         const d = keyToDir[e.key];
         if (d) {
@@ -128,6 +129,63 @@
         if (e.key === 'p' || e.key === 'P') this.pausePressed = true;
         if (e.key === 'r' || e.key === 'R') this.restartPressed = true;
       }, { passive: false });
+
+      // touch UI (D-pad)
+      const dpad = document.getElementById('dpad');
+      if (dpad) {
+        const onPress = (dirName) => {
+          const d = DIR[dirName];
+          if (d) this.desiredDir = d;
+        };
+        dpad.addEventListener('pointerdown', (e) => {
+          const btn = e.target?.closest?.('button[data-dir]');
+          if (!btn) return;
+          onPress(btn.getAttribute('data-dir'));
+          e.preventDefault();
+        }, { passive: false });
+      }
+
+      // touch actions
+      const btnPause = document.getElementById('btnPause');
+      if (btnPause) btnPause.addEventListener('pointerdown', (e) => { this.pausePressed = true; e.preventDefault(); }, { passive: false });
+      const btnRestart = document.getElementById('btnRestart');
+      if (btnRestart) btnRestart.addEventListener('pointerdown', (e) => { this.restartPressed = true; e.preventDefault(); }, { passive: false });
+
+      // swipe on canvas
+      const canvas = document.getElementById('game');
+      if (canvas) {
+        let startX = 0, startY = 0;
+        let tracking = false;
+        const threshold = 18; // px
+
+        canvas.addEventListener('touchstart', (e) => {
+          if (!e.touches || e.touches.length !== 1) return;
+          const t = e.touches[0];
+          startX = t.clientX;
+          startY = t.clientY;
+          tracking = true;
+          e.preventDefault();
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', (e) => {
+          if (!tracking || !e.touches || e.touches.length !== 1) return;
+          const t = e.touches[0];
+          const dx = t.clientX - startX;
+          const dy = t.clientY - startY;
+          if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return;
+
+          tracking = false; // one direction per swipe
+          if (Math.abs(dx) > Math.abs(dy)) {
+            this.desiredDir = dx > 0 ? DIR.RIGHT : DIR.LEFT;
+          } else {
+            this.desiredDir = dy > 0 ? DIR.DOWN : DIR.UP;
+          }
+          e.preventDefault();
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', () => { tracking = false; }, { passive: true });
+        canvas.addEventListener('touchcancel', () => { tracking = false; }, { passive: true });
+      }
     }
 
     consumePause() { const v = this.pausePressed; this.pausePressed = false; return v; }

@@ -24,8 +24,21 @@
       </main>
 
       <footer class="help">
-        <div><b>Move</b>: Arrows / WASD · <b>Pause</b>: P · <b>Restart</b>: R</div>
+        <div><b>Move</b>: Arrows / WASD · Swipe · D-pad · <b>Pause</b>: P · <b>Restart</b>: R</div>
       </footer>
+
+      <div class="touch" aria-hidden="true">
+        <div class="touch__pad" id="dpad">
+          <button class="touch__btn touch__btn--up" data-dir="UP" aria-label="Up">▲</button>
+          <button class="touch__btn touch__btn--left" data-dir="LEFT" aria-label="Left">◀</button>
+          <button class="touch__btn touch__btn--right" data-dir="RIGHT" aria-label="Right">▶</button>
+          <button class="touch__btn touch__btn--down" data-dir="DOWN" aria-label="Down">▼</button>
+        </div>
+        <div class="touch__actions">
+          <button class="touch__btn touch__btn--action" id="btnPause" aria-label="Pause">Pause</button>
+          <button class="touch__btn touch__btn--action" id="btnRestart" aria-label="Restart">Restart</button>
+        </div>
+      </div>
     </div>
 
     <script defer src="game.js"></script>
