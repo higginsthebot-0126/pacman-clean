@@ -445,6 +445,7 @@
     }
 
     moveEntity(ent, dt, who) {
+      // Decide turns only near tile centers.
       if (this.isCentered(ent)) {
         this.snapToCenter(ent);
 
@@ -461,12 +462,26 @@
         }
       }
 
+      // Move + hard collision correction (prevents drifting through walls).
+      const ox = ent.x, oy = ent.y;
       ent.x += ent.dir.x * ent.speed * dt;
       ent.y += ent.dir.y * ent.speed * dt;
 
+      // tunnel wrap
       if (Math.floor(ent.y) === 14) {
         if (ent.x < -0.5) ent.x = GRID_W - 0.5;
         if (ent.x > GRID_W - 0.5) ent.x = -0.5;
+      }
+
+      // If we ended up inside a blocked tile, revert.
+      const tx = Math.floor(ent.x);
+      const ty = Math.floor(ent.y);
+      const ok = this.canEnter(tx, ty, who === 'player' ? 'player' : 'ghost');
+      if (!ok) {
+        ent.x = ox;
+        ent.y = oy;
+        ent.dir = DIR.NONE;
+        if (who === 'player') this.snapToCenter(ent); // keep player aligned
       }
 
       ent.x = clamp(ent.x, -1, GRID_W + 1);
