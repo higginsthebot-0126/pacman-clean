@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pac-Man Clean</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="hud">
+        <div class="hud__left">
+          <div class="hud__item"><span class="hud__label">Score</span> <span id="score">0</span></div>
+          <div class="hud__item"><span class="hud__label">Level</span> <span id="level">1</span></div>
+        </div>
+        <div class="hud__right">
+          <div class="hud__item"><span class="hud__label">Lives</span> <span id="lives">3</span></div>
+          <div class="hud__item" id="state">Ready</div>
+        </div>
+      </header>
+
+      <main class="stage">
+        <canvas id="game" width="448" height="576"></canvas>
+      </main>
+
+      <footer class="help">
+        <div><b>Move</b>: Arrows / WASD · <b>Pause</b>: P · <b>Restart</b>: R</div>
+      </footer>
+    </div>
+
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
